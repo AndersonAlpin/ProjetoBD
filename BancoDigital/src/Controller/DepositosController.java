@@ -5,6 +5,7 @@
  */
 package Controller;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import java.awt.Toolkit;
 import java.awt.datatransfer.ClipboardOwner;
@@ -39,6 +40,10 @@ public class DepositosController implements Initializable {
     private Label lbVencimento;
     @FXML
     private Label lbCodigo;
+    @FXML
+    private Label lbValor;
+    @FXML
+    private JFXButton btConfirmar;
 
     /**
      * Initializes the controller class.
@@ -53,6 +58,7 @@ public class DepositosController implements Initializable {
         paneGerarBoleto.setVisible(false);
         paneReceberBoleto.setVisible(true);
         gerarCodigoDeBarras();
+        valorDeposito();
     }
 
     @FXML
@@ -78,9 +84,23 @@ public class DepositosController implements Initializable {
         lbCodigo.setText(codigo);
     }
 
-    @FXML
-    private void tfFormatDinheiro(KeyEvent event) {
-        
+    private void valorDeposito(){
+        Locale l = new Locale("pt", "BR");
+        NumberFormat nf = NumberFormat.getCurrencyInstance(l);
+        lbValor.setText(nf.format(Double.parseDouble(tfValor.getText())));
     }
-    
+
+    @FXML
+    private void detectarValor(KeyEvent event) {
+        int valor = Integer.parseInt(tfValor.getText());
+        try {
+            if(valor >= 20){
+                btConfirmar.setDisable(false);
+            }else{
+                btConfirmar.setDisable(true);
+            }
+        } catch (Exception e) {
+            System.out.println("Erro");
+        }
+    }
 }

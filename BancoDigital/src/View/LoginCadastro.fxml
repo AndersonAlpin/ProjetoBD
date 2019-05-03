@@ -222,7 +222,7 @@
                               <Font name="Trebuchet MS" size="15.0" />
                            </font>
                         </Label>
-                        <JFXComboBox fx:id="cbSexo1" focusColor="#012245" layoutX="218.0" layoutY="152.0" prefHeight="35.0" prefWidth="190.0" promptText="Selecione" />
+                        <JFXComboBox fx:id="cbRenda" focusColor="#012245" layoutX="218.0" layoutY="152.0" prefHeight="35.0" prefWidth="190.0" promptText="Selecione" />
                         <Label layoutX="218.0" layoutY="201.0" text="Telefone" textFill="#012245">
                            <font>
                               <Font name="Trebuchet MS" size="15.0" />
@@ -296,7 +296,7 @@
                         </JFXButton>
                      </children>
                   </Pane>
-                  <JFXButton alignment="CENTER" focusTraversable="false" layoutX="574.0" layoutY="6.0" onAction="#voltarLogin" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #FFF;" text="Login" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <JFXButton alignment="CENTER" focusTraversable="false" layoutX="574.0" layoutY="6.0" onAction="#voltarLogin" prefHeight="40.0" prefWidth="81.0" style="-fx-background-color: #FFF;" text="Voltar" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <font>
                         <Font name="Trebuchet MS" size="18.0" />
                      </font>

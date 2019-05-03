@@ -1,15 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" prefHeight="550.0" prefWidth="809.0" styleClass="colorBranco" stylesheets="@../CSS/Style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.TransferenciasController">
    <children>
-      <Label layoutX="247.0" layoutY="239.0" text="Transferências">
+      <Label alignment="CENTER" layoutX="175.0" layoutY="46.0" prefHeight="49.0" prefWidth="460.0" text="Transferência entre contas Banco Digital" textAlignment="CENTER" textFill="#012245" AnchorPane.topAnchor="75.0">
          <font>
-            <Font size="50.0" />
+            <Font name="SimSun" size="22.0" />
          </font>
       </Label>
+      <Pane layoutX="306.0" layoutY="168.0" prefHeight="271.0" prefWidth="198.0">
+         <children>
+            <Label layoutX="1.0" layoutY="5.0" text="Agência:">
+               <font>
+                  <Font name="Times New Roman" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="1.0" layoutY="53.0" text="Conta:">
+               <font>
+                  <Font name="Times New Roman" size="18.0" />
+               </font>
+            </Label>
+            <TextField fx:id="tfAgencia" layoutX="74.0" prefHeight="31.0" prefWidth="55.0" style="-fx-border-color: #aaa;">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </TextField>
+            <TextField fx:id="tfConta" layoutX="59.0" layoutY="48.0" prefHeight="31.0" prefWidth="77.0" style="-fx-border-color: #aaa;">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </TextField>
+            <Label layoutX="144.0" layoutY="54.0" text="-">
+               <font>
+                  <Font name="Times New Roman" size="18.0" />
+               </font>
+            </Label>
+            <TextField fx:id="tfDigito" layoutX="157.0" layoutY="48.0" prefHeight="31.0" prefWidth="30.0" style="-fx-border-color: #aaa;">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </TextField>
+            <Label layoutY="132.0" text="Valor:">
+               <font>
+                  <Font name="Times New Roman" size="18.0" />
+               </font>
+            </Label>
+            <TextField fx:id="tfValor" layoutX="57.0" layoutY="127.0" prefHeight="31.0" prefWidth="115.0" promptText="R$ 0,00" style="-fx-border-color: #aaa;">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </TextField>
+            <Label layoutX="1.0" layoutY="180.0" text="Senha:">
+               <font>
+                  <Font name="Times New Roman" size="18.0" />
+               </font>
+            </Label>
+            <PasswordField fx:id="tfSenha" layoutX="59.0" layoutY="175.0" prefHeight="31.0" prefWidth="55.0" style="-fx-border-color: #aaa;" />
+            <Label fx:id="lbMostrarFavorecido" layoutX="93.0" layoutY="92.0" prefHeight="20.0" prefWidth="159.0" text="Fulano de Tal">
+               <font>
+                  <Font name="Times New Roman" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbFavorecido" layoutX="1.0" layoutY="92.0" text="Favorecido:">
+               <font>
+                  <Font name="Times New Roman" size="18.0" />
+               </font>
+            </Label>
+            <JFXButton disable="true" focusTraversable="false" layoutX="37.0" layoutY="231.0" onAction="#confirmarTransferência" prefHeight="40.0" prefWidth="130.0" style="-fx-background-color: #012245;" text="Confirmar" textFill="#f8f8f8">
+               <font>
+                  <Font name="Trebuchet MS" size="18.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

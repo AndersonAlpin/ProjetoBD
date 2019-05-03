@@ -16,7 +16,7 @@
                   <Font name="SimSun" size="22.0" />
                </font>
             </Label>
-            <JFXTextField fx:id="tfValor" focusColor="#0f7e8c" layoutX="77.0" layoutY="71.0" nodeOrientation="RIGHT_TO_LEFT" onKeyReleased="#tfFormatDinheiro" prefHeight="39.0" prefWidth="141.0" promptText="R$ 0,00">
+            <JFXTextField fx:id="tfValor" focusColor="#0f7e8c" layoutX="77.0" layoutY="71.0" onKeyReleased="#detectarValor" prefHeight="39.0" prefWidth="141.0" promptText="R$ 0,00">
                <font>
                   <Font size="18.0" />
                </font>
@@ -26,7 +26,7 @@
                   <Font name="SimSun" size="18.0" />
                </font>
             </Label>
-            <JFXButton layoutX="83.0" layoutY="220.0" onAction="#confirmarValor" prefHeight="40.0" prefWidth="130.0" style="-fx-background-color: #012245;" text="Confirmar" textFill="#f8f8f8">
+            <JFXButton fx:id="btConfirmar" disable="true" focusTraversable="false" layoutX="83.0" layoutY="220.0" onAction="#confirmarValor" prefHeight="40.0" prefWidth="130.0" style="-fx-background-color: #012245;" text="Confirmar" textFill="#f8f8f8">
                <font>
                   <Font name="Trebuchet MS" size="18.0" />
                </font>
@@ -35,7 +35,7 @@
       </Pane>
       <Pane fx:id="paneReceberBoleto" layoutX="257.0" layoutY="115.0" prefHeight="342.0" prefWidth="300.0" visible="false">
          <children>
-            <Label alignment="CENTER" layoutX="53.0" prefHeight="49.0" prefWidth="190.0" text="RS 280,00" textAlignment="CENTER" textFill="#0d0d0d">
+            <Label fx:id="lbValor" alignment="CENTER" layoutX="53.0" prefHeight="49.0" prefWidth="190.0" text="RS 280,00" textAlignment="CENTER" textFill="#0d0d0d">
                <font>
                   <Font name="SimSun" size="22.0" />
                </font>

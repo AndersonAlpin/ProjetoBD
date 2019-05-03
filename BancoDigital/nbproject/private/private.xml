@@ -4,8 +4,8 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Anderson/Documents/NetBeansProjects/BancoDigital/src/CSS/Style.css</file>
-            <file>file:/C:/Users/Anderson/Documents/NetBeansProjects/BancoDigital/src/Controller/DepositosController.java</file>
-            <file>file:/C:/Users/Anderson/Documents/NetBeansProjects/BancoDigital/src/Controller/MinhaContaController.java</file>
+            <file>file:/C:/Users/Anderson/Documents/NetBeansProjects/BancoDigital/src/Controller/LoginCadastroController.java</file>
+            <file>file:/C:/Users/Anderson/Documents/NetBeansProjects/BancoDigital/src/Controller/MeusDadosController.java</file>
         </group>
     </open-files>
 </project-private>
