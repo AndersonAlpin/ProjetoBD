@@ -1,12 +1,4 @@
 /*TOPO*/
-.menuButton {
-    -fx-graphic: url("../Imagens/menu-avatar.png");
-    -fx-background-color: #012245;
-}
-
-.menuButton:hover {
-    -fx-background-color: #fff;
-}
 
 .buttonPrimeiro {
     -fx-shape: "M 300 300 L 300 400 L 500 400 L 550 300 L 300 300";
@@ -20,6 +12,15 @@
     -fx-shape: "M 400 300 L 450 200 L 600 200 L 600 300 L 400 300";
 }
 
+.menuButton {
+    -fx-graphic: url("../Imagens/menu-avatar.png");
+    -fx-background-color: #012245;
+}
+
+.menuButton:hover {
+    -fx-background-color: #fff;
+}
+
 .buttonConfig {
     -fx-background-color:  #012245;
     -fx-border-color: #fff;
@@ -27,7 +28,35 @@
 }
 
 .buttonUnderline:hover {
-    -fx-underline: true;    
+    -fx-background-color: #fff;
+    -fx-border-color: #012245;
+    -fx-text-fill: #012245;    
+}
+
+.buttonMinimizarFechar {
+    -fx-background-color: #012245;
+    -fx-border-color: #fff;
+    -fx-text-fill: #fff;
+}
+
+.buttonMinimizarFechar:pressed {
+    -fx-background-color: #999999;
+}
+
+.buttonFecharLogin {
+    -fx-background-color: #fff;
+    -fx-border-color: #012245;
+    -fx-text-fill: #012245;
+    -fx-border-radius: 2;
+    -fx-border-width: 1;
+}
+
+
+.buttonMinimizarLogin {
+    -fx-border-color: #012245;
+    -fx-background-color: #fff;
+    -fx-border-radius: 2;
+    -fx-border-width: 1;
 }
 /*LATERAL ESQUERDA*/
 .lateralEsquerda {
@@ -44,4 +73,38 @@
 
 .colorBranco {
     -fx-background-color: #fff;
+}
+
+/*HOME*/
+.backgroundHome {
+    -fx-background-image: url("../Imagens/home.jpg");
+}
+
+/*LINKS EM GERAL*/
+
+.link {
+   -fx-text-fill: #35B0DB; 
+   -fx-underline: false;
+}
+
+.link:visited {
+    -fx-text-fill: #35B0DB;
+}
+
+.link:hover {
+    -fx-underline: true;
+}
+
+.link:pressed {
+    -fx-text-fill: #666666;
+    -fx-underline: true;
+}
+/*FUNCIONARIO - EMPRESTIMOS*/
+
+.buttonCopiar{
+    -fx-background-color: transparent;
+}
+
+.buttonCopiar:pressed {
+    -fx-background-color: #999999;
 }

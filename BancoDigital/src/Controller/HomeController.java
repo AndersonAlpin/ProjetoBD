@@ -7,7 +7,9 @@ package Controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.layout.BorderPane;
 
 /**
  * FXML Controller class
@@ -16,6 +18,9 @@ import javafx.fxml.Initializable;
  */
 public class HomeController implements Initializable {
 
+    @FXML
+    private BorderPane borderPaneHome;
+
 
     /**
      * Initializes the controller class.
@@ -23,6 +28,5 @@ public class HomeController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
-    
+    }
 }

@@ -5,10 +5,12 @@
  */
 package Controller;
 
-import com.jfoenix.controls.JFXButton;
+import DAOCliente.ContaDAO;
+import ModelCliente.Conta;
+import ModelCliente.SessaoCliente;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -21,37 +23,27 @@ import javafx.scene.control.Label;
 public class MinhaContaController implements Initializable {
 
     @FXML
-    private Label lbMostrarValidade;
-    @FXML
     private Label lbMostrarDigito;
     @FXML
     private Label lbMostrarConta;
     @FXML
     private Label lbMostrarAgencia;
-    @FXML
-    private Label lbMostrarSenha;
-    @FXML
-    private Label lbDadosPessoaisOuCadastro;
-    @FXML
-    private JFXButton btStatusSenha;
-
+    
+    SessaoCliente sessao = SessaoCliente.getInstancia();
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
-
-    @FXML
-    private void statusSenha(ActionEvent event) {
-        if(lbMostrarSenha.getText().equals("****")){
-            btStatusSenha.setText("Ocultar");
-            lbMostrarSenha.setText("1234");
-        }else{
-            btStatusSenha.setText("Mostrar");
-            lbMostrarSenha.setText("****");
-        }
+        carregarDados();
     }
     
+    private void carregarDados(){
+        ContaDAO daoC = new ContaDAO();
+        List<Conta> conta = daoC.getConta(sessao.getID_Cliente());
+        
+        lbMostrarAgencia.setText(conta.get(0).getAgencia());
+        lbMostrarConta.setText(conta.get(0).getConta());
+        lbMostrarDigito.setText(conta.get(0).getDigito());
+    }
 }

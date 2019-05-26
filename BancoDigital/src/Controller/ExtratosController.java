@@ -5,9 +5,25 @@
  */
 package Controller;
 
+import DAOCliente.ContaDAO;
+import DAOCliente.ExtratoDAO;
+import ModelCliente.Conta;
+import ModelCliente.Extrato;
+import ModelCliente.SessaoCliente;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
  * FXML Controller class
@@ -16,12 +32,88 @@ import javafx.fxml.Initializable;
  */
 public class ExtratosController implements Initializable {
 
+    @FXML
+    private TableView<Extrato> tableExtrato;
+    @FXML
+    private TableColumn<Extrato, String> clmData;
+    @FXML
+    private TableColumn<Extrato, String> clmDescricao;
+    @FXML
+    private TableColumn<Extrato, String> clmEntrada;
+    @FXML
+    private TableColumn<Extrato, String> clmSaida;
+    @FXML
+    private TableColumn<Extrato, String> clmSaldo;
+    @FXML
+    private Label lbEntrada;
+    @FXML
+    private Label lbSaida;
+    @FXML
+    private Label lbSaldo;
+    
+    SessaoCliente sessao = SessaoCliente.getInstancia();
+    private Hyperlink linkDetalhes;
+    
+    Extrato selecionandoExtrato;
+    
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
+        preencherExtrato();
+        somaExtrato();
+    }
     
+    private void preencherExtrato(){
+        clmData.setCellValueFactory(new PropertyValueFactory<>("dataFormatada"));
+        clmDescricao.setCellValueFactory(new PropertyValueFactory<>("Descricao"));
+        clmEntrada.setCellValueFactory(new PropertyValueFactory<>("entradaFormatada"));
+        clmSaida.setCellValueFactory(new PropertyValueFactory<>("saidaFormatada"));
+        clmSaldo.setCellValueFactory(new PropertyValueFactory<>("saldoFormatado"));
+        
+        tableExtrato.setItems(extrato());
+    }
+    
+    public ObservableList<Extrato> extrato(){
+        ContaDAO daoC = new ContaDAO();
+        List<Conta> conta = daoC.getConta(sessao.getID_Cliente());
+        
+        ExtratoDAO daoE = new ExtratoDAO();
+        return FXCollections.observableArrayList(daoE.getList(conta.get(0).getID_Conta()));
+    }
+    
+    private void somaExtrato(){
+        ContaDAO daoC = new ContaDAO();
+        List<Conta> conta = daoC.getConta(sessao.getID_Cliente());
+        
+        ExtratoDAO daoE = new ExtratoDAO();
+        List<Extrato> extrato = daoE.getSomaExtrato(conta.get(0).getID_Conta());
+        
+        try {
+            if(extrato.isEmpty() == false){
+                lbEntrada.setText(extrato.get(0).getEntradaFormatada());
+                lbSaida.setText(extrato.get(0).getSaidaFormatada());
+                lbSaldo.setText(conta.get(0).getSaldoFormatado());
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    @FXML
+    private void gerarCSV(ActionEvent event) {
+        ContaDAO daoC = new ContaDAO();
+        List<Conta> conta = daoC.getConta(sessao.getID_Cliente());
+        
+        ExtratoDAO daoE = new ExtratoDAO();
+        
+        daoE.gerarCSV(conta.get(0).getID_Conta(), sessao.getNome(), sessao.getSobrenome());
+        
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Banco Digital");
+        alert.setHeaderText("O extrato foi exportado.");
+        alert.setContentText("Verifique sua área de trabalho.");
+        alert.showAndWait();
+    }
+
 }
