@@ -21,6 +21,9 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.Random;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -101,6 +104,21 @@ public class DepositosController implements Initializable {
                 }
             }
         });
+        
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {{
+                    try {
+                        if(selecionandoBoleto.equals("")){
+                            preencherTabelaBoletos();
+                        }
+                    } catch (Exception e) {
+                    }
+                }});
+            }
+        }, 1000, 1000);
     }    
 
     @FXML

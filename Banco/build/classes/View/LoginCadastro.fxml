@@ -64,12 +64,12 @@
                   <DropShadow />
                </effect>
             </Label>
-            <Label layoutX="59.0" layoutY="220.0" text="É simples e rápido abrir a sua " textFill="#fcf6f6">
+            <Label fx:id="lbTexto1" layoutX="59.0" layoutY="220.0" text="É rápido e fácil abrir a sua" textFill="#fcf6f6">
                <font>
                   <Font name="Trebuchet MS" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="59.0" layoutY="241.0" text="Conta Digital!" textFill="#fcf6f6">
+            <Label fx:id="lbTexto2" layoutX="59.0" layoutY="241.0" text="conta digital!" textFill="#fcf6f6">
                <font>
                   <Font name="Trebuchet MS" size="18.0" />
                </font>
@@ -334,7 +334,7 @@
                   </Button>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="anchorLoginFuncionario" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #fff; -fx-border-color: #012245;" visible="false">
+            <AnchorPane fx:id="anchorLoginFuncionario" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #fff; -fx-border-color: #012245;">
                <children>
                   <Label layoutX="237.0" layoutY="81.0" text="Área do funcionário" textFill="#012245">
                      <font>

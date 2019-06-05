@@ -447,6 +447,7 @@ public class LoginCadastroController implements Initializable {
                     sessaoF.setSexo(funcionario.get(0).getSexo());
                     sessaoF.setSobrenome(funcionario.get(0).getSobrenome());
                     sessaoF.setTelefone(funcionario.get(0).getTelefone());
+                    sessaoF.setDepartamento(funcionario.get(0).getDepartamento());
 
                     try {
                         Gerente g = new Gerente();

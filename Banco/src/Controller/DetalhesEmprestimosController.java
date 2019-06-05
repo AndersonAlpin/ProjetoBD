@@ -5,8 +5,10 @@
  */
 package Controller;
 
+import DAOFuncionario.AgenciaDAO;
 import DAOFuncionario.FuncionarioDAO;
 import DAOFuncionario.ClienteDAOF;
+import ModelFuncionario.Agencia;
 import ModelFuncionario.ClienteF;
 import ModelFuncionario.SessaoFuncionario;
 import Recursos.Criptografia;
@@ -18,7 +20,11 @@ import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -123,20 +129,55 @@ public class DetalhesEmprestimosController implements Initializable {
                 }
             }
         });
+        
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    if(tableClientes.getSelectionModel().isEmpty() == false){
+                        detalhesCliente();
+                    }else {
+                        preencherTabelaEmprestimo();
+                    }
+                    
+                    verificarQtdEmprestimo();
+                });
+            }
+        }, 1000, 1000);
     }    
     
+    //Verificar se a quantidade de registros da tabela é menor
+    //que a quantidade mais recente
+    private void verificarQtdEmprestimo(){
+        ClienteDAOF daoC = new ClienteDAOF();
+        List<ClienteF> c = daoC.getJoinEmprestimo();
+        
+        try {
+            if(c.size() != tableClientes.getItems().size()){
+                preencherTabelaEmprestimo();
+            }
+        } catch (Exception e) {
+        }
+    }
+    
     private void detalhesCliente(){
-        lbMostrarCPF.setText(selecionandoCliente.getCPF());
-        lbMostrarSobrenome.setText(selecionandoCliente.getSobrenome());
-        lbmostrarNome.setText(selecionandoCliente.getNome());
-        lbNumeroParcelas.setText(selecionandoCliente.getParcelasTotal()+ "");
-        lbParcelasRestantes.setText(selecionandoCliente.getParcelasParcial() + "");
-        lbStatus.setText(selecionandoCliente.getStatus());
-        lbTaxaJuros.setText(selecionandoCliente.getJuros() + "");
-        lbValorParcelas.setText(selecionandoCliente.getValorParcelasFormatado());
-        lbValorEmprestimo.setText(selecionandoCliente.getValorEmprestimoFormatado());
-        lbDividaTotal.setText(selecionandoCliente.getDividaTotalFormatada());
-        lbDividaRestante.setText(selecionandoCliente.getDividaParcialFormatada());
+        ClienteDAOF daoC = new ClienteDAOF();
+        List<ClienteF> c = daoC.getJoinEmprestimoPorID(selecionandoCliente.getID_Emprestimo());
+        
+        int juros = (int) (c.get(0).getJuros() * 100);
+        
+        lbMostrarCPF.setText(c.get(0).getCPF());
+        lbMostrarSobrenome.setText(c.get(0).getSobrenome());
+        lbmostrarNome.setText(c.get(0).getNome());
+        lbNumeroParcelas.setText(c.get(0).getParcelasTotal()+ "");
+        lbParcelasRestantes.setText(c.get(0).getParcelasParcial() + "");
+        lbStatus.setText(c.get(0).getStatus());
+        lbTaxaJuros.setText(juros + "%");
+        lbValorParcelas.setText(c.get(0).getValorParcelasFormatado());
+        lbValorEmprestimo.setText(c.get(0).getValorEmprestimoFormatado());
+        lbDividaTotal.setText(c.get(0).getDividaTotalFormatada());
+        lbDividaRestante.setText(c.get(0).getDividaParcialFormatada());
         
     }
     
@@ -175,7 +216,12 @@ public class DetalhesEmprestimosController implements Initializable {
         daoC.aprovarEmprestimo(C);
         
         limparLabels();
-        preencherTabelaEmprestimo();
+        
+        try {
+            preencherTabelaEmprestimo();
+        } catch (Exception e) {
+        }
+        
     }
 
     @FXML
@@ -194,7 +240,11 @@ public class DetalhesEmprestimosController implements Initializable {
         daoC.negarEmprestimo(C);
         
         limparLabels();
-        preencherTabelaEmprestimo();
+        
+        try {
+            preencherTabelaEmprestimo();
+        } catch (Exception e) {
+        }
     }
 
     @FXML

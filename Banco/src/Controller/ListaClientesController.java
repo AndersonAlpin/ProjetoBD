@@ -10,7 +10,11 @@ import ModelFuncionario.ClienteF;
 import Recursos.TextFieldFormatter;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -60,10 +64,11 @@ public class ListaClientesController implements Initializable {
     private TableColumn<ClienteF, String> clmSobrenome;
     @FXML
     private TableColumn<ClienteF, String> clmCPF;
-    
-    ClienteF selecionandoCliente;
     @FXML
     private JFXTextField tfFiltroCPF;
+    
+    ClienteF selecionandoCliente;
+    
     /**
      * Initializes the controller class.
      */
@@ -78,25 +83,55 @@ public class ListaClientesController implements Initializable {
                 selecionandoCliente = (ClienteF) newValue;
                 
                 if(!selecionandoCliente.equals("")){
-                    listaClientes();
+                    detalhesCliente();
                 }
             }
         });
+        
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                   if(tableClientes.getSelectionModel().isEmpty() == false){
+                       detalhesCliente();
+                   }else {
+                       if(tfFiltroCPF.getText().length() == 0){
+                           verificarQtdClientes();
+                       }
+                   }
+                });
+            }
+        }, 1000, 1000);
     }    
     
-    private void listaClientes(){
+    //Verificar se a quantidade de registros da tabela é menor
+    //que a quantidade mais recente
+    private void verificarQtdClientes(){
+        ClienteDAOF daoC = new ClienteDAOF();
+        List<ClienteF> c = daoC.getJoinClientes();
         
-        lbmostrarNome.setText(selecionandoCliente.getNome());
-        lbMostrarSobrenome.setText(selecionandoCliente.getSobrenome());
-        lbMostrarCPF.setText(selecionandoCliente.getCPF());
-        lbMostrarDataNascimento.setText(selecionandoCliente.getDataNascimentoFormatada());
-        lbMostrarRenda.setText(selecionandoCliente.getRenda());
-        lbMostrarProfissao.setText(selecionandoCliente.getProfissao());
-        lbMostrarTelefone.setText(selecionandoCliente.getTelefone());
-        lbMostrarLogradouro.setText(selecionandoCliente.getLogradouro());
-        lbMostrarBairro.setText(selecionandoCliente.getBairro());
-        lbMostrarCEP.setText(selecionandoCliente.getCEP());
-        lbMostrarUF.setText(selecionandoCliente.getUF());
+        if(c.size() != tableClientes.getItems().size()){
+            preencherTabelaClientes();
+        }
+    }
+    
+    private void detalhesCliente(){
+        
+        ClienteDAOF daoC = new ClienteDAOF();
+        List<ClienteF> c = daoC.buscarCPF(selecionandoCliente.getCPF());
+        
+        lbmostrarNome.setText(c.get(0).getNome());
+        lbMostrarSobrenome.setText(c.get(0).getSobrenome());
+        lbMostrarCPF.setText(c.get(0).getCPF());
+        lbMostrarDataNascimento.setText(c.get(0).getDataNascimentoFormatada());
+        lbMostrarRenda.setText(c.get(0).getRenda());
+        lbMostrarProfissao.setText(c.get(0).getProfissao());
+        lbMostrarTelefone.setText(c.get(0).getTelefone());
+        lbMostrarLogradouro.setText(c.get(0).getLogradouro());
+        lbMostrarBairro.setText(c.get(0).getBairro());
+        lbMostrarCEP.setText(c.get(0).getCEP());
+        lbMostrarUF.setText(c.get(0).getUF());
     }
     
     private void preencherTabelaClientes(){

@@ -6,12 +6,18 @@
 package Controller;
 
 import DAOFuncionario.AgenciaDAO;
+import DAOFuncionario.FuncionarioDAO;
 import DAOFuncionario.RelatorioFinanceiroDAO;
 import ModelFuncionario.Agencia;
 import ModelCliente.RelatorioFinanceiro;
+import ModelFuncionario.Funcionario;
+import ModelFuncionario.SessaoFuncionario;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -48,6 +54,8 @@ public class RelatorioFinanceiroController implements Initializable {
     private Label lbSaida;
     @FXML
     private Label lbSaldo;
+    
+    SessaoFuncionario sessao = SessaoFuncionario.getInstancia();
 
     /**
      * Initializes the controller class.
@@ -56,12 +64,23 @@ public class RelatorioFinanceiroController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         preencherRelatorio();
         somaExtrato();
+        
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    preencherRelatorio();
+                    somaExtrato();
+                });
+            }
+        }, 1000, 1000);
     }    
 
     @FXML
     private void gerarCSV(ActionEvent event) {
         RelatorioFinanceiroDAO daoR = new RelatorioFinanceiroDAO();
-        daoR.gerarCSV(1);
+        daoR.gerarCSV(sessao.getID_Departamento());
         
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Banco Digital");
@@ -81,23 +100,29 @@ public class RelatorioFinanceiroController implements Initializable {
     }
     
     public ObservableList<RelatorioFinanceiro> relatorio(){
-            
+        FuncionarioDAO daoF = new FuncionarioDAO();
+        List<Funcionario> f = daoF.getFuncionario(sessao.getCPF());
+        
         RelatorioFinanceiroDAO daoR = new RelatorioFinanceiroDAO();
-        return FXCollections.observableArrayList(daoR.getList(1));
+        return FXCollections.observableArrayList(daoR.getList(sessao.getID_Departamento()));
     }
     
     private void somaExtrato(){
         AgenciaDAO daoC = new AgenciaDAO();
-        List<Agencia> caixa = daoC.getSaldoCaixa();
+        List<Agencia> a = daoC.getSaldoAgencia();
         
         RelatorioFinanceiroDAO daoR = new RelatorioFinanceiroDAO();
-        List<RelatorioFinanceiro> relatorio = daoR.getSomaRelatorio(1);
+        List<RelatorioFinanceiro> relatorio = daoR.getSomaRelatorio(sessao.getID_Departamento());
         
         try {
             if(relatorio.isEmpty() == false){
                 lbEntrada.setText(relatorio.get(0).getEntradaFormatada());
                 lbSaida.setText(relatorio.get(0).getSaidaFormatada());
-                lbSaldo.setText(caixa.get(0).getSaldoFormatado());
+                lbSaldo.setText(a.get(0).getSaldoFormatado());
+            }else {
+                lbEntrada.setText("R$ 0,00");
+                lbSaida.setText("R$ 0,00");
+                lbSaldo.setText(a.get(0).getSaldoFormatado());
             }
         } catch (Exception e) {
         }

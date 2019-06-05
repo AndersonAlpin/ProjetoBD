@@ -13,6 +13,9 @@ import ModelCliente.SessaoCliente;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -63,6 +66,17 @@ public class ExtratosController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         preencherExtrato();
         somaExtrato();
+        
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    preencherExtrato();
+                    somaExtrato();
+                });
+            }
+        }, 1000, 1000);
     }
     
     private void preencherExtrato(){
@@ -94,6 +108,10 @@ public class ExtratosController implements Initializable {
             if(extrato.isEmpty() == false){
                 lbEntrada.setText(extrato.get(0).getEntradaFormatada());
                 lbSaida.setText(extrato.get(0).getSaidaFormatada());
+                lbSaldo.setText(conta.get(0).getSaldoFormatado());
+            }else {
+                lbEntrada.setText("R$ 0,00");
+                lbSaida.setText("R$ 0,00");
                 lbSaldo.setText(conta.get(0).getSaldoFormatado());
             }
         } catch (Exception e) {

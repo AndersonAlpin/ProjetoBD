@@ -13,6 +13,9 @@ import com.jfoenix.controls.JFXPasswordField;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -62,14 +65,14 @@ public class MeusDadosFuncionarioController implements Initializable {
     private JFXPasswordField tfSenhaExclusao;
     @FXML
     private Label lbStatusSenha;
-    
-    SessaoFuncionario sessao = SessaoFuncionario.getInstancia();
     @FXML
     private Label lbMostrarDepartamento;
     @FXML
     private Label lbMostrarSalario;
     @FXML
     private Label lbMostrarSexo;
+    
+    SessaoFuncionario sessao = SessaoFuncionario.getInstancia();
 
     /**
      * Initializes the controller class.
@@ -77,24 +80,34 @@ public class MeusDadosFuncionarioController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         meusDadosFuncionario();
+        
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask(){
+            @Override
+            public void run(){
+                Platform.runLater(() -> {
+                    meusDadosFuncionario();
+                });
+            }
+        },1000, 1000);
     }    
     
     private void meusDadosFuncionario(){
         FuncionarioDAO daoF = new FuncionarioDAO();
-        List<Funcionario> inner = daoF.getJoinFuncionarios(sessao.getID_Funcionario());
+        List<Funcionario> f = daoF.getFuncionario(sessao.getCPF());
         
-        lbmostrarNome.setText(inner.get(0).getNome());
-        lbMostrarSobrenome.setText(inner.get(0).getSobrenome());
-        lbMostrarCPF.setText(inner.get(0).getCPF());
-        lbMostrarDataNascimento.setText(inner.get(0).getDataNascimentoFormatado());
-        lbMostrarDepartamento.setText(inner.get(0).getDepartamento());
-        lbMostrarSalario.setText(inner.get(0).getSalarioFormatado());
-        lbMostrarSexo.setText(inner.get(0).getSexo());
-        lbMostrarTelefone.setText(inner.get(0).getTelefone());
-        lbMostrarLogradouro.setText(inner.get(0).getLogradouro());
-        lbMostrarBairro.setText(inner.get(0).getBairro());
-        lbMostrarCEP.setText(inner.get(0).getCEP());
-        lbMostrarUF.setText(inner.get(0).getUF());
+        lbmostrarNome.setText(f.get(0).getNome());
+        lbMostrarSobrenome.setText(f.get(0).getSobrenome());
+        lbMostrarCPF.setText(f.get(0).getCPF());
+        lbMostrarDataNascimento.setText(f.get(0).getDataNascimentoFormatado());
+        lbMostrarDepartamento.setText(f.get(0).getDepartamento());
+        lbMostrarSalario.setText(f.get(0).getSalarioFormatado());
+        lbMostrarSexo.setText(f.get(0).getSexo());
+        lbMostrarTelefone.setText(f.get(0).getTelefone());
+        lbMostrarLogradouro.setText(f.get(0).getLogradouro());
+        lbMostrarBairro.setText(f.get(0).getBairro());
+        lbMostrarCEP.setText(f.get(0).getCEP());
+        lbMostrarUF.setText(f.get(0).getUF());
        
     }
     

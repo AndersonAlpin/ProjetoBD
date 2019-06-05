@@ -43,6 +43,7 @@
                </font>
             </Label>
             <PasswordField fx:id="tfSenha" layoutX="65.0" layoutY="225.0" prefHeight="33.0" prefWidth="100.0" />
+            <Label fx:id="lbTaxa" alignment="CENTER" contentDisplay="CENTER" layoutX="65.0" layoutY="169.0" prefHeight="17.0" prefWidth="100.0" textAlignment="CENTER" />
          </children>
       </Pane>
       <Pane fx:id="paneTermos" layoutX="267.0" layoutY="133.0" prefHeight="326.0" prefWidth="276.0" style="-fx-background-color: #fff; -fx-border-color: #012245;" visible="false">
@@ -52,23 +53,28 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </Label>
-            <Label layoutX="12.0" layoutY="49.0" prefHeight="64.0" prefWidth="252.0" text="2º - Todas as parcelas serão descontadas diretamente de sua conta." wrapText="true">
+            <Label layoutX="12.0" layoutY="86.0" prefHeight="58.0" prefWidth="252.0" text="2º - Todas as parcelas serão descontadas diretamente de sua conta." wrapText="true">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label layoutX="12.0" layoutY="114.0" prefHeight="64.0" prefWidth="252.0" text="3º - Não poderá solicitar um novo empréstimo até quitar o empréstimo anterior." wrapText="true">
+            <Label layoutX="12.0" layoutY="141.0" prefHeight="64.0" prefWidth="252.0" text="3º - Não poderá solicitar um novo empréstimo até quitar o empréstimo anterior." wrapText="true">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label layoutX="12.0" layoutY="178.0" prefHeight="73.0" prefWidth="252.0" text="4º - Se a conta for deletada antes de quitar o empréstimo, as faturas serão encaminhadas para o seu endereço." wrapText="true">
+            <Label layoutX="12.0" layoutY="203.0" prefHeight="73.0" prefWidth="252.0" text="4º - Não poderá deletar a conta caso exista um empréstimo em andamento." wrapText="true">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
             <JFXButton layoutX="251.0" onAction="#fecharTermos" style="-fx-border-color: #012245;" text="X" />
-            <Label layoutX="12.0" layoutY="251.0" prefHeight="49.0" prefWidth="243.0" text="5º - Ao clicar em &quot;Aceito&quot; você concorda com todos os nossos termos." wrapText="true">
+            <Label layoutX="12.0" layoutY="262.0" prefHeight="49.0" prefWidth="243.0" text="5º - Ao clicar em &quot;Aceito&quot; você concorda com todos os nossos termos." wrapText="true">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="12.0" layoutY="38.0" prefHeight="58.0" prefWidth="252.0" text="1º - O valor das parcelas inclui a dívida total devido a taxa de juros." wrapText="true">
                <font>
                   <Font size="14.0" />
                </font>

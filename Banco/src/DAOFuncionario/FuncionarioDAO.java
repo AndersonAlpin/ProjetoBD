@@ -6,8 +6,6 @@
 package DAOFuncionario;
 import ModelFuncionario.Funcionario;
 import ConnectionFactory.ConnectionFuncionario;
-import DAOCliente.ClienteDAO;
-import ModelFuncionario.ClienteF;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,7 +30,7 @@ public class FuncionarioDAO {
     
     public List<Funcionario> getFuncionario(String cpf){
         List<Funcionario> funcionario = new ArrayList<>();
-        String sql = "SELECT * FROM Funcionario WHERE CPF = '"+ cpf +"';";
+        String sql = "CALL pBuscarFuncionarioPorCPF('"+ cpf +"');";
         
         try {
             PreparedStatement stmt = con.prepareStatement(sql);
@@ -40,16 +38,21 @@ public class FuncionarioDAO {
             
             while(rs.next()){
                 Funcionario f = new Funcionario();
-                f.setID_Funcionario(rs.getInt("ID_funcionario"));
+                f.setID_EnderecoFuncionario(rs.getInt("ID_EnderecoFuncionario"));
                 f.setID_Departamento(rs.getInt("ID_Departamento"));
                 f.setCPF(rs.getString("CPF"));
-                f.setDataNascimento(rs.getString("Data_Nascimento"));
                 f.setNome(rs.getString("Nome"));
-                f.setSalario(rs.getDouble("Salario"));
-                f.setSenha(rs.getString("Senha"));
-                f.setSexo(rs.getString("Sexo"));
                 f.setSobrenome(rs.getString("Sobrenome"));
-                f.setTelefone(rs.getString("Telefone"));
+                f.setDataNascimento(rs.getString("Data_Nascimento"));
+                f.setSexo(rs.getString("Sexo"));
+                f.setTelefone(rs.getString("Telefone"));;
+                f.setSalario(rs.getDouble("Salario"));
+                f.setLogradouro(rs.getString("Logradouro"));
+                f.setBairro(rs.getString("Bairro"));
+                f.setCEP(rs.getString("CEP"));
+                f.setUF(rs.getString("UF"));
+                f.setSenha(rs.getString("Senha"));
+                f.setDepartamento(rs.getString("NomeDepartamento"));
                 
                 funcionario.add(f);
             }

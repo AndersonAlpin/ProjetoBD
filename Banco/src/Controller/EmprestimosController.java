@@ -7,9 +7,11 @@ package Controller;
 
 import DAOCliente.ClienteDAO;
 import DAOCliente.EmprestimoDAO;
+import DAOFuncionario.AgenciaDAO;
 import ModelCliente.ClienteC;
 import ModelCliente.Emprestimo;
 import ModelCliente.SessaoCliente;
+import ModelFuncionario.Agencia;
 import Recursos.Criptografia;
 import Recursos.FormatarDinheiro;
 import com.jfoenix.controls.JFXButton;
@@ -19,6 +21,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -52,8 +57,6 @@ public class EmprestimosController implements Initializable {
     private Label lbSenha;
     @FXML
     private PasswordField tfSenha;
-
-    SessaoCliente sessao = SessaoCliente.getInstancia();
     @FXML
     private Label lbValorEmprestimo;
     @FXML
@@ -75,12 +78,35 @@ public class EmprestimosController implements Initializable {
     @FXML
     private JFXButton btSolicitacao;
     
+    SessaoCliente sessao = SessaoCliente.getInstancia();
+    @FXML
+    private Label lbTaxa;
+    
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         verificarSolicitacaoEmprestimo();
+        
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    if(!btSolicitacao.getText().equals("Aberto")){
+                        verificarSolicitacaoEmprestimo();
+                    }
+                    
+                    EmprestimoDAO daoE = new EmprestimoDAO();
+                    List<Emprestimo> e = daoE.getTaxaJuros();
+                    
+                    int juros = (int) (e.get(0).getJuros() * 100);
+
+                    lbTaxa.setText("Juros: " + juros + "%");
+                });
+            }
+        }, 1000, 10000);
     }    
 
     @FXML
@@ -181,10 +207,12 @@ public class EmprestimosController implements Initializable {
     }   
     
     private void preencherComboBoxParcelas(){
+        EmprestimoDAO daoE = new EmprestimoDAO();
+        List<Emprestimo> em = daoE.getTaxaJuros();
         try {
             if(tfValor.getText().length() > 0){
                 Double valor = Double.parseDouble(tfValor.getText().replace(",", "."));
-                valor += valor * 0.04;
+                valor += valor * em.get(0).getJuros();
                 double a = valor/6;
                 double b = valor/12;
                 double c = valor/18;
@@ -216,7 +244,7 @@ public class EmprestimosController implements Initializable {
     private void verificarLimiteEmprestimo(){
         ClienteDAO daoCl = new ClienteDAO();
         List<ClienteC> cliente = daoCl.getUsuario(sessao.getCPF());
-                
+        
         String renda = cliente.get(0).getRenda();
         double limite = 0;
         
@@ -263,13 +291,15 @@ public class EmprestimosController implements Initializable {
         
         try {
             if(emprestimo.isEmpty() == false){
+                int juros = (int) (emprestimo.get(0).getJuros() * 100);
+                
                 lbValorEmprestimo.setText(emprestimo.get(0).getValorEmprestimoFormatado());
                 lbDividaRestante.setText(emprestimo.get(0).getDividaParcialFormatada());
                 lbDividaTotal.setText(emprestimo.get(0).getDividaTotalFormatada());
                 lbValorParcelas.setText(emprestimo.get(0).getValorParcelasFormatado());
                 lbNumeroParcelas.setText(emprestimo.get(0).getParcelasTotal() + "");
                 lbParcelasRestantes.setText(emprestimo.get(0).getParcelasParcial()+ "");
-                lbTaxaJuros.setText(emprestimo.get(0).getJuros() + "%");
+                lbTaxaJuros.setText(juros + "%");
                 lbStatus.setText(emprestimo.get(0).getStatus());
                 
                 String status = emprestimo.get(0).getStatus();
@@ -283,6 +313,7 @@ public class EmprestimosController implements Initializable {
                         break;
                     case "Negado":
                         meuEmprestimo.setVisible(true);
+                        btSolicitacao.setVisible(true);
                         btSolicitacao.setText("Nova solicitação");
                         break;
                     case "Cancelado":
@@ -290,6 +321,7 @@ public class EmprestimosController implements Initializable {
                         break;
                     case "Pago":
                         meuEmprestimo.setVisible(true);
+                        btSolicitacao.setVisible(true);
                         btSolicitacao.setText("Nova solicitação");
                         break;
                 }
@@ -300,6 +332,8 @@ public class EmprestimosController implements Initializable {
 
     @FXML
     private void solicitacaoEmprestimo(ActionEvent event) {
+        verificarSolicitacaoEmprestimo();
+        
         Emprestimo e = new Emprestimo();
         EmprestimoDAO daoE = new EmprestimoDAO();
         EmprestimoDAO dao = new EmprestimoDAO();
@@ -309,8 +343,14 @@ public class EmprestimosController implements Initializable {
         if(lbStatus.getText().equals("Aguardando aprovação")){
             dao.cancelarEmprestimo(e);
             meuEmprestimo.setVisible(false);
+            btSolicitacao.setText("Aberto");
         }else {
+            meuEmprestimo.setVisible(true);
+        }
+        
+        if(lbStatus.getText().equals("Pago") || lbStatus.getText().equals("Negado") && btSolicitacao.getText().equals("Nova solicitação")){
             meuEmprestimo.setVisible(false);
+            btSolicitacao.setText("Aberto");
         }
     }
 

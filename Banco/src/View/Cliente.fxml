@@ -112,28 +112,28 @@
    <left>
       <AnchorPane prefHeight="550.0" prefWidth="215.0" styleClass="lateralEsquerda" stylesheets="@../CSS/Style.css" BorderPane.alignment="CENTER">
          <children>
-            <Label layoutX="16.0" layoutY="34.0" text="Bem vindo, " AnchorPane.leftAnchor="16.0">
+            <Label layoutX="15.0" layoutY="83.0" text="Bem vindo, " AnchorPane.leftAnchor="15.0">
                <font>
                   <Font name="Trebuchet MS Bold" size="15.0" />
                </font>
             </Label>
-            <Label fx:id="lbNomeCliente" layoutX="16.0" layoutY="55.0" prefHeight="21.0" prefWidth="188.0" AnchorPane.leftAnchor="16.0">
+            <Label fx:id="lbNomeCliente" layoutX="15.0" layoutY="107.0" prefHeight="21.0" prefWidth="188.0" text="Cliente" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="104.0">
                <font>
                   <Font size="15.0" />
                </font>
             </Label>
-            <Line endX="100.0" layoutX="108.0" layoutY="108.0" startX="-100.0" style="-fx-stroke-dash-array: 2;" />
-            <Label layoutX="17.0" layoutY="133.0" text="Saldo">
+            <Line endX="100.0" layoutX="109.0" layoutY="137.0" startX="-100.0" style="-fx-stroke-dash-array: 2;" AnchorPane.leftAnchor="8.5" AnchorPane.topAnchor="136.5" />
+            <Label layoutX="17.0" layoutY="154.0" text="Saldo">
                <font>
                   <Font name="Trebuchet MS Bold" size="15.0" />
                </font>
             </Label>
-            <Label fx:id="lbSaldoCliente" layoutX="18.0" layoutY="152.0" prefHeight="21.0" prefWidth="105.0" text="R$ 870.000,00">
+            <Label fx:id="lbSaldoCliente" layoutX="18.0" layoutY="152.0" prefHeight="21.0" prefWidth="105.0" text="R$ 870.000,00" AnchorPane.topAnchor="173.0">
                <font>
                   <Font size="15.0" />
                </font>
             </Label>
-            <Line endX="100.0" layoutX="109.0" layoutY="202.0" startX="-100.0" style="-fx-stroke-dash-array: 2;" />
+            <Line endX="100.0" layoutX="109.0" layoutY="202.0" startX="-100.0" style="-fx-stroke-dash-array: 2;" AnchorPane.leftAnchor="8.5" AnchorPane.topAnchor="212.5" />
             <Label layoutX="18.0" layoutY="230.0" text="Limite de emprestimo">
                <font>
                   <Font name="Trebuchet MS Bold" size="15.0" />
@@ -240,17 +240,28 @@
                   </Button>
                </children>
             </GridPane>
-            <Line endX="100.0" layoutX="108.0" layoutY="294.0" startX="-100.0" style="-fx-stroke-dash-array: 2;" />
+            <Line endX="100.0" layoutX="108.0" layoutY="294.0" startX="-100.0" style="-fx-stroke-dash-array: 2;" AnchorPane.topAnchor="293.5" />
             <TextField fx:id="display" alignment="CENTER_RIGHT" editable="false" focusTraversable="false" layoutX="17.0" layoutY="326.0" prefHeight="38.0" prefWidth="180.0">
                <font>
                   <Font size="18.0" />
                </font>
             </TextField>
-            <Hyperlink focusTraversable="false" layoutX="13.0" layoutY="79.0" onAction="#atualizarDados" styleClass="link" stylesheets="@../CSS/Style.css" text="Atualizar" AnchorPane.leftAnchor="15.0">
+            <Hyperlink focusTraversable="false" layoutX="13.0" layoutY="79.0" onAction="#atualizarDados" styleClass="link" stylesheets="@../CSS/Style.css" text="Atualizar" visible="false" AnchorPane.leftAnchor="15.0">
                <font>
                   <Font size="14.0" />
                </font>
             </Hyperlink>
+            <Line endX="100.0" startX="-100.0" style="-fx-stroke-dash-array: 2;" AnchorPane.leftAnchor="8.5" AnchorPane.topAnchor="69.5" />
+            <Label fx:id="lbHora" layoutX="16.0" layoutY="37.0" text="18:30:20" AnchorPane.leftAnchor="16.0">
+               <font>
+                  <Font name="Arial Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbData" layoutX="53.0" layoutY="16.0" text="02/06/2019" AnchorPane.leftAnchor="16.0">
+               <font>
+                  <Font name="Arial Bold" size="13.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </left>

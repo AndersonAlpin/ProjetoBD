@@ -7,8 +7,10 @@ package Controller;
 
 import ClassePrincipal.LoginCadastro;
 import DAOCliente.ClienteDAO;
+import DAOCliente.EmprestimoDAO;
 import DAOCliente.EnderecoDAO;
 import ModelCliente.ClienteC;
+import ModelCliente.Emprestimo;
 import ModelCliente.Endereco;
 import ModelCliente.SessaoCliente;
 import Recursos.Criptografia;
@@ -22,8 +24,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -87,8 +92,6 @@ public class MeusDadosController implements Initializable {
     private JFXButton btCancelar;
     @FXML
     private JFXButton btSalvar;
-    
-    SessaoCliente sessao = SessaoCliente.getInstancia();
     @FXML
     private Label lbMostrarDataNascimento;
     @FXML
@@ -100,6 +103,8 @@ public class MeusDadosController implements Initializable {
     @FXML
     private Label lbStatusSenha;
 
+    SessaoCliente sessao = SessaoCliente.getInstancia();
+    
     /**
      * Initializes the controller class.
      */
@@ -108,7 +113,31 @@ public class MeusDadosController implements Initializable {
        preencherComboBoxRenda();
        preencherComboBoxUF();
        carregarDados();
-    }    
+       verificarEmprestimo();
+       
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask(){
+           @Override
+            public void run(){
+                 Platform.runLater(() -> {
+                     carregarDados();
+                 });
+            }
+        }, 1000, 1000);
+    } 
+    
+    private void verificarEmprestimo(){
+        EmprestimoDAO daoE = new EmprestimoDAO();
+        List<Emprestimo> emprestimo = daoE.getEmprestimo(sessao.getID_Cliente());
+        
+        if(emprestimo.isEmpty() == false){
+            if(emprestimo.get(0).getStatus().equals("Aprovado")){
+                btDeletar.setDisable(true);
+            }else {
+                btDeletar.setDisable(false);
+            }
+        }
+    }
     
     private void getDadosAtualizados(){
         lbMostrarRenda.setText(cbRenda.getSelectionModel().getSelectedItem().toString());
@@ -146,18 +175,21 @@ public class MeusDadosController implements Initializable {
         EnderecoDAO daoE = new EnderecoDAO();
         List<Endereco> endereco = daoE.getEndereco(sessao.getID_Cliente());
         
+        ClienteDAO daoC = new ClienteDAO();
+        List<ClienteC> c = daoC.getUsuario(sessao.getCPF());
+        
         lbMostrarBairro.setText(endereco.get(0).getBairro());
         lbMostrarCEP.setText(endereco.get(0).getCEP());
         lbMostrarLogradouro.setText(endereco.get(0).getLogradouro());
         lbMostrarUF.setText(endereco.get(0).getUF());
         
-        lbMostrarCPF.setText(sessao.getCPF());
-        lbMostrarProfissao.setText(sessao.getProfissao());
-        lbMostrarRenda.setText(sessao.getRenda());
-        lbMostrarSobrenome.setText(sessao.getSobrenome());
-        lbMostrarTelefone.setText(sessao.getTelefone());
-        lbmostrarNome.setText(sessao.getNome());
-        lbMostrarDataNascimento.setText(sessao.getDataNascimentoFormatada());
+        lbMostrarCPF.setText(c.get(0).getCPF());
+        lbMostrarProfissao.setText(c.get(0).getProfissao());
+        lbMostrarRenda.setText(c.get(0).getRenda());
+        lbMostrarSobrenome.setText(c.get(0).getSobrenome());
+        lbMostrarTelefone.setText(c.get(0).getTelefone());
+        lbmostrarNome.setText(c.get(0).getNome());
+        lbMostrarDataNascimento.setText(c.get(0).getDataNascimentoFormatada());
     }
     
     //Preencher a combobox UF

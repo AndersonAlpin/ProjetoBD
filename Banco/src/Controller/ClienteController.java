@@ -18,11 +18,16 @@ import com.jfoenix.controls.JFXButton;
 import java.io.IOException;
 import java.net.URL;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -107,6 +112,10 @@ public class ClienteController extends ClienteC implements Initializable {
     private Label lbLimiteEmprestimo;
     
     SessaoCliente sessao = SessaoCliente.getInstancia();
+    @FXML
+    private Label lbHora;
+    @FXML
+    private Label lbData;
     /**
      * Initializes the controller class.
      */
@@ -114,9 +123,30 @@ public class ClienteController extends ClienteC implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         loadTelas("/View/Home");
         carregarDadosCliente();
+        relogioDigital();
+        
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask(){
+            @Override
+            public void run(){
+                Platform.runLater(() -> {
+                    carregarDadosCliente();
+                    relogioDigital();
+                });
+            }
+        },1000,1000);
     }
     
-    public void carregarDadosCliente(){
+    private void relogioDigital(){
+        SimpleDateFormat formatHora = new SimpleDateFormat("hh:mm:ss a");
+        SimpleDateFormat formatData = new SimpleDateFormat("dd/MM/yyyy");
+        Date hora = new Date();
+        Date data = new Date();
+        lbHora.setText(formatHora.format(hora));
+        lbData.setText(formatData.format(data));
+    }
+    
+    private void carregarDadosCliente(){
         Locale l = new Locale("pt", "BR");
         NumberFormat nf = NumberFormat.getCurrencyInstance(l);
         
@@ -129,7 +159,8 @@ public class ClienteController extends ClienteC implements Initializable {
         ClienteDAO daoCl = new ClienteDAO();
         List<ClienteC> cliente = daoCl.getUsuario(sessao.getCPF());
         
-        lbNomeCliente.setText(sessao.getNome() + " " + sessao.getSobrenome() + "!");
+        
+        lbNomeCliente.setText(cliente.get(0).getNome() + " " + cliente.get(0).getSobrenome() + "!");
         lbSaldoCliente.setText(nf.format(conta.get(0).getSaldo()));
         
         String renda = cliente.get(0).getRenda();
@@ -291,7 +322,7 @@ public class ClienteController extends ClienteC implements Initializable {
     }
     
     public void fecharCliente(){
-        Cliente.getStage().close();
+        System.exit(0);
     }
 
     @FXML

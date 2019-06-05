@@ -75,9 +75,14 @@
     -fx-background-color: #fff;
 }
 
-/*HOME*/
-.backgroundHome {
-    -fx-background-image: url("../Imagens/home.jpg");
+/*HOME CLIENTE*/
+.backgroundHomeCliente {
+    -fx-background-image: url("../Imagens/home-2.jpg");
+}
+
+/*HOME FUNCIONARIO*/
+.backgroundHomeFuncionario {
+    -fx-background-image: url("../Imagens/home-2.jpg");
 }
 
 /*LINKS EM GERAL*/

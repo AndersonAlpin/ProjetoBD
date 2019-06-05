@@ -9,17 +9,22 @@ import ClassePrincipal.Cliente;
 import ClassePrincipal.Gerente;
 import ClassePrincipal.LoginCadastro;
 import DAOFuncionario.AgenciaDAO;
-import ModelFuncionario.Funcionario;
 import DAOFuncionario.FuncionarioDAO;
 import ModelFuncionario.Agencia;
 import ModelCliente.ClienteC;
+import ModelFuncionario.Funcionario;
 import ModelFuncionario.SessaoFuncionario;
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -86,6 +91,10 @@ public class GerenteController extends ClienteC implements Initializable {
     
     
     SessaoFuncionario sessao = SessaoFuncionario.getInstancia();
+    @FXML
+    private Label lbHora;
+    @FXML
+    private Label lbData;
     /**
      * Initializes the controller class.
      */
@@ -93,6 +102,18 @@ public class GerenteController extends ClienteC implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         loadTelas("/View/HomeFuncionario");
         carregarDadosAgencia();
+        relogioDigital();
+        
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    carregarDadosAgencia();
+                    relogioDigital();
+                });
+            }
+        }, 1000, 1000);
     }
     
     //Ações no clique da calculadora
@@ -166,14 +187,24 @@ public class GerenteController extends ClienteC implements Initializable {
         }
     }
     
+    private void relogioDigital(){
+        SimpleDateFormat formatHora = new SimpleDateFormat("hh:mm:ss a");
+        SimpleDateFormat formatData = new SimpleDateFormat("dd/MM/yyyy");
+        Date hora = new Date();
+        Date data = new Date();
+        lbHora.setText(formatHora.format(hora));
+        lbData.setText(formatData.format(data));
+    }
+    
     private void carregarDadosAgencia(){
         AgenciaDAO daoC = new AgenciaDAO();
-        List<Agencia> agencia = daoC.getSaldoCaixa();
+        List<Agencia> agencia = daoC.getSaldoAgencia();
         lbSaldoCaixa.setText(agencia.get(0).getSaldoFormatado());
         
         FuncionarioDAO daoF = new FuncionarioDAO();
-        List<Funcionario> f = daoF.getFuncionario("555.555.555-55");
+        List<Funcionario> f = daoF.getFuncionario(sessao.getCPF());
         
+        lbDepartamento.setText(f.get(0).getDepartamento());
         lbNomeFuncionario.setText(f.get(0).getNome() + " " + f.get(0).getSobrenome());
     }
     
@@ -202,7 +233,7 @@ public class GerenteController extends ClienteC implements Initializable {
     }
     
     public void fecharGerente(){
-        Gerente.getStage().close();
+        System.exit(0);
     }
 
     @FXML

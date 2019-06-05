@@ -72,6 +72,29 @@ public class EmprestimoDAO {
         }
     }
     
+    public List<Emprestimo> getTaxaJuros( ){
+        List<Emprestimo> emprestimo = new ArrayList<>();
+        String sql = "CALL pIdentificaTaxaJuros();";
+        
+        try {
+            PreparedStatement stmt = con.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            
+            while(rs.next()){
+                Emprestimo e = new Emprestimo();
+                e.setJuros(rs.getDouble("taxaJuros"));
+                
+                emprestimo.add(e);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+        }finally {
+            ConnectionCliente.closeConnection(con, stmt, rs);
+        }
+        return emprestimo;
+    }
+    
     public List<Emprestimo> getEmprestimo(int idCliente){
         List<Emprestimo> emprestimo = new ArrayList<>();
         String sql = "CALL pVerificarEmprestimoExistente("+idCliente+");";

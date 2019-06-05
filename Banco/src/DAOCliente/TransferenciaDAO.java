@@ -52,7 +52,7 @@ public class TransferenciaDAO {
          
     public List<ClienteC> identificaTransmissario(String co, String d){
         List<ClienteC> cliente = new ArrayList<>();
-        String sql = "CALL pIdentificarTransmissario(" + co + ", " + d + ");" ;
+        String sql = "CALL pIdentificarFavorecido(" + co + ", " + d + ");" ;
         
         try {
             java.sql.PreparedStatement stmt = con.prepareStatement(sql);

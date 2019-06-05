@@ -13,6 +13,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -27,8 +29,8 @@ public class AgenciaDAO {
         this.con = new ConnectionFuncionario().getConnectionFuncionario();
     }
     
-    public List<Agencia> getSaldoCaixa(){
-        List<Agencia> caixa = new ArrayList<>();
+    public List<Agencia> getSaldoAgencia(){
+        List<Agencia> agencia = new ArrayList<>();
         String sql = "SELECT * FROM Agencia WHERE ID_Agencia = 1;";
         
         try {
@@ -39,7 +41,7 @@ public class AgenciaDAO {
                 Agencia c = new Agencia();
                 c.setSaldo(rs.getDouble("Saldo"));
                 
-                caixa.add(c);
+                agencia.add(c);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -47,6 +49,6 @@ public class AgenciaDAO {
         }finally {
             ConnectionFuncionario.closeConnection(con, stmt, rs);
         }
-        return caixa;
+        return agencia;
     }
 }

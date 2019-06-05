@@ -21,7 +21,7 @@ public class Criptografia {
     //Gerar Hash - Passagem do valor por parâmetro
     public static byte[] gerarHash(String senha){
         try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
             md.update(senha.getBytes());
             return md.digest();
         } catch (NoSuchAlgorithmException e) {
